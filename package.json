@@ -1,0 +1,49 @@
+{
+  "name": "fxplorer",
+  "version": "0.5.1-ios-preview",
+  "private": true,
+  "description": "A more considered Windows file explorer. Browse, visualize and understand your storage.",
+  "author": "Revathify",
+  "license": "MIT",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "test:desktop": "node tests/desktop-smoke.cjs",
+    "test:cache-desktop": "node tests/cache-desktop-smoke.cjs",
+    "test:layout-desktop": "node tests/layout-desktop-smoke.cjs",
+    "test:pastel-desktop": "node tests/pastel-desktop-smoke.cjs",
+    "test:ios-desktop": "node tests/ios-desktop-smoke.cjs",
+    "test:ios-workspace": "node tests/ios-workspace-smoke.cjs",
+    "test:packaged": "node tests/packaged-smoke.cjs",
+    "build:win": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "44.3.0",
+    "electron-builder": "26.15.3",
+    "playwright": "1.63.0"
+  },
+  "build": {
+    "appId": "com.revathify.fxplorer.iospreview",
+    "productName": "fxplorer",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**",
+      "ui/**",
+      "assets/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "assets/icon.ico",
+      "signExecutable": false
+    },
+    "portable": {
+      "artifactName": "fxplorer-${version}-win-x64.exe"
+    }
+  }
+}

@@ -1,0 +1,113 @@
+const { _electron: electron } = require('playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs/promises');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..');
+const output = path.join(root, '.test-output');
+let fixture;
+const errors = [];
+
+async function main() {
+  await fs.mkdir(output, { recursive: true });
+  const run = await fs.mkdtemp(path.join(output, 'desktop-run-'));
+  fixture = path.join(run, 'Workspace');
+  await fs.mkdir(fixture, { recursive: true });
+  const sizes = [['Workspaces', 'app.ts', 4_800_000], ['Media', 'video.mp4', 3_100_000], ['Archives', 'backup.zip', 2_400_000], ['Design assets', 'design.psd', 1_600_000], ['Documents', 'report.pdf', 800_000], ['Screen recordings', 'demo.mp4', 550_000], ['Music', 'track.flac', 350_000], ['Notes', 'ideas.md', 140_000], ['Resources', 'data.json', 90_000]];
+  for (const [folder, file, size] of sizes) { await fs.mkdir(path.join(fixture, folder), { recursive: true }); const handle = await fs.open(path.join(fixture, folder, file), 'w'); await handle.truncate(size); await handle.close(); }
+  await fs.writeFile(path.join(fixture, 'Read me.txt'), 'Welcome to fxplorer.\nYour files, with a little more clarity.\n');
+  await fs.writeFile(path.join(fixture, "notes & 'quotes'.txt"), 'Safe filename rendering.');
+  await fs.writeFile(path.join(fixture, '.hidden.txt'), 'hidden');
+  const app = await electron.launch({ args: [root, `--user-data-dir=${path.join(run, 'profile')}`], env: { ...process.env, ELECTRON_DISABLE_SECURITY_WARNINGS: 'true' } });
+  try {
+    const page = await app.firstWindow();
+    page.on('pageerror', e => errors.push(e.message));
+    await page.waitForFunction(() => document.getElementById('address').value.length > 0, undefined, { timeout: 25000 });
+    assert.equal(await page.evaluate(() => typeof window.require), 'undefined', 'renderer must not have Node integration');
+    const address = page.locator('#address');
+    await address.fill(fixture); await address.press('Enter');
+    await page.waitForFunction(p => document.querySelector('#address').value === p && document.querySelectorAll('.file-row').length > 0, fixture);
+    await page.locator('#scan').click();
+    await page.waitForFunction(() => document.querySelector('#status').textContent.includes('Analysis complete'));
+    assert.equal(await page.locator('.map-block').count(), 12);
+    assert.equal(await page.locator('#scan-label').textContent(), 'Analyze again');
+    assert.ok((await page.locator('#folder-subtitle').textContent()).includes('analyzed'));
+    // Selection must preserve elements so double-click navigation still fires.
+    await page.locator('.map-block').filter({ hasText: 'Workspaces' }).locator('.block-name').dblclick();
+    await page.waitForFunction(p => document.querySelector('#address').value === p, path.join(fixture, 'Workspaces'));
+    await page.locator('#back').click();
+    await page.waitForFunction(p => document.querySelector('#address').value === p, fixture);
+    if (await page.locator('#ios-toggle-details').count()) await page.locator('#ios-toggle-details').click();
+    await page.locator('.file-row').filter({ hasText: 'Read me.txt' }).click();
+    await page.locator('[data-action="preview"]').click();
+    await page.locator('.preview-box pre').waitFor();
+    assert.match(await page.locator('.preview-box pre').textContent(), /Welcome to fxplorer/);
+    await page.locator('[data-action="review"]').click();
+    await page.locator('[data-view="review"]').click();
+    assert.equal(await page.locator('.file-row').count(), 1);
+    await page.locator('[data-view="browse"]').click();
+    await page.locator('#search').fill('quotes');
+    assert.equal(await page.locator('.file-row').count(), 1);
+    assert.equal(await page.locator('.file-row td').first().textContent(), "notes & 'quotes'.txt");
+    await page.locator('#search').fill('');
+    await page.locator('#new-folder').click(); await page.locator('#name-input').fill('Created in fxplorer'); await page.locator('#dialog-submit').click();
+    await page.locator('#name-dialog').waitFor({ state: 'hidden' });
+    assert.ok((await fs.stat(path.join(fixture, 'Created in fxplorer'))).isDirectory());
+    const nameValidation = await page.evaluate(async p => {
+      const result = [];
+      for (const name of ['../escape', 'CON', 'bad?name', 'trailing.']) { try { await window.fxplorer.newFolder(p, name); result.push(false); } catch { result.push(true); } }
+      return result;
+    }, fixture);
+    assert.deepEqual(nameValidation, [true, true, true, true]);
+    await page.locator('.file-row').filter({ hasText: 'Read me.txt' }).click();
+    await page.evaluate(() => window.fxplorer.copy(document.querySelector('.file-row.selected').dataset.path));
+    await page.evaluate(p => window.fxplorer.paste(p), path.join(fixture, 'Created in fxplorer'));
+    assert.match(await fs.readFile(path.join(fixture, 'Created in fxplorer', 'Read me.txt'), 'utf8'), /Welcome/);
+    const collision = await page.evaluate(async p => { try { await window.fxplorer.paste(p); return false; } catch { return true; } }, path.join(fixture, 'Created in fxplorer'));
+    assert.equal(collision, true);
+    await page.evaluate(p => window.fxplorer.rename(p, 'Renamed.txt'), path.join(fixture, 'Created in fxplorer', 'Read me.txt'));
+    assert.ok((await fs.stat(path.join(fixture, 'Created in fxplorer', 'Renamed.txt'))).isFile());
+    // Check the native confirmation boundary without recycling a real item.
+    await app.evaluate(({ dialog }) => { dialog.showMessageBox = async () => ({ response: 0 }); });
+    assert.equal(await page.evaluate(p => window.fxplorer.trash(p), path.join(fixture, 'Read me.txt')), false);
+    assert.ok((await fs.stat(path.join(fixture, 'Read me.txt'))).isFile());
+    await page.locator('#new-tab').click();
+    await page.waitForFunction(() => document.querySelectorAll('#tabs .tab').length === 2);
+    await page.waitForFunction(() => !document.body.classList.contains('loading'));
+    await page.locator('#tabs .tab').first().click();
+    await page.waitForFunction(() => !document.body.classList.contains('loading'));
+    await page.locator('#scan').click(); await page.waitForFunction(() => document.querySelector('#status').textContent.includes('Analysis complete'));
+    await page.locator('#tabs .tab').last().click(); await page.waitForFunction(() => !document.body.classList.contains('loading'));
+    await page.locator('#tabs .tab').first().click(); await page.waitForFunction(() => !document.body.classList.contains('loading'));
+    assert.equal(await page.locator('#scan-label').textContent(), 'Analyze again', 'switching tabs should retain the completed map');
+    await page.locator('#pin-folder').click(); assert.ok(await page.locator('#favorites .favorite').count() >= 1);
+    await page.locator('#scan').click(); await page.waitForFunction(() => document.querySelector('#status').textContent.includes('Analysis complete'));
+    await page.locator('[data-view="large"]').click();
+    assert.equal(await page.locator('.file-row').first().locator('td').first().textContent(), 'app.ts');
+    await page.locator('[data-view="browse"]').click();
+    await page.locator('#settings-button').click();
+    await page.locator('[data-theme-choice="light"]').click();
+    await page.locator('#setting-accent').selectOption('blue');
+    await page.locator('#setting-density').selectOption('compact');
+    await page.locator('#setting-startup').selectOption('last');
+    await page.locator('#setting-limit').selectOption('1000000');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
+    await page.screenshot({ path: path.join(output, 'fxplorer-settings.png'), animations: 'disabled' });
+    await page.locator('#close-settings').click();
+    await page.reload();
+    await page.waitForFunction(p => document.querySelector('#address').value === p && document.querySelectorAll('.file-row').length > 0, fixture);
+    assert.deepEqual(await page.evaluate(() => [document.documentElement.dataset.theme, document.documentElement.dataset.accent, document.documentElement.dataset.density, window.fxSettings.maxEntries]), ['light', 'blue', 'compact', 1000000]);
+    await page.locator('#scan').click(); await page.waitForFunction(() => /Analysis complete/.test(document.querySelector('#status').textContent));
+    await page.screenshot({ path: path.join(output, 'fxplorer-light.png'), animations: 'disabled' });
+    await page.locator('#settings-button').click();
+    await page.locator('[data-theme-choice="system"]').click();
+    assert.equal(await page.evaluate(() => window.fxSettings.theme), 'system');
+    await page.locator('#reset-settings').click(); await page.locator('#close-settings').click();
+    await page.setViewportSize({ width: 1480, height: 900 });
+    await page.evaluate(() => document.querySelector('#toast').classList.remove('visible'));
+    await page.screenshot({ path: path.join(output, 'fxplorer-desktop.png'), animations: 'disabled' });
+    assert.deepEqual(errors, []);
+    console.log('Desktop smoke passed: sandboxed preload, real folder scan, treemap drilldown, history, safe text preview, review list, filter/escaping, folder creation, rejected Windows names, copy/collision/rename, native recycle cancellation, tabs, pins, largest-files ordering, light/system themes, accent/density/limit/startup persistence after reload.');
+    console.log('Screenshot: .test-output/fxplorer-desktop.png');
+  } finally { await app.close(); }
+}
+main().catch(error => { console.error(error); process.exitCode = 1; });

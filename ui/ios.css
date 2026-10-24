@@ -1,0 +1,210 @@
+/* Original Windows file-browser theme using broad iOS/iPadOS visual cues.
+   Keep this stylesheet last in the UI cascade. */
+.ios-theme-options { margin-top: 18px; }
+.ios-theme-note { color: var(--muted); font-size: 11px; line-height: 1.7; }
+.ios-light-preview { background: #f2f2f7; border-color: #d2d2d7; }
+.ios-light-preview i { background: #e3eaf4; border-color: #cdd8e6; }
+.ios-light-preview b { background: linear-gradient(90deg, #0074dc 45%, #fff 45%); border-radius: 10px; }
+.ios-dark-preview { background: #000; border-color: #38383a; }
+.ios-dark-preview i { background: #1c1c1e; border-color: #38383a; }
+.ios-dark-preview b { background: linear-gradient(90deg, #0091ff 45%, #2c2c2e 45%); border-radius: 10px; }
+[data-theme="ios-light"] ::-webkit-scrollbar-thumb { background: #babac2; }
+[data-theme="ios-dark"] ::-webkit-scrollbar-thumb { background: #545459; }
+:root[data-theme="ios-light"] {
+  color-scheme: light;
+  --ios-bg: #f2f2f7;
+  --ios-surface: #ffffff;
+  --ios-raised: #ffffff;
+  --ios-toolbar: rgba(244, 246, 250, .94);
+  --ios-text: #17171a;
+  --ios-secondary: #5e5e66;
+  --ios-tertiary: #777780;
+  --ios-line: #d2d2d7;
+  --ios-blue: #0074dc;
+  --ios-blue-tint: #e1efff;
+  --ios-hover: #e9e9ee;
+  --ios-selected: #dcecff;
+  --ios-input: #f1f1f6;
+  --ios-icon: #397bb7;
+  --ios-shadow: 0 5px 18px rgba(27, 45, 70, .08);
+  --bg: var(--ios-bg); --panel: var(--ios-surface); --sidebar: #e9eaf0;
+  --line: var(--ios-line); --text: var(--ios-text); --muted: var(--ios-secondary);
+  --accent: var(--ios-blue); --blue: var(--ios-blue);
+  --accent-soft: var(--ios-blue-tint); --accent-ink: #fff;
+  --theme-bg-gradient: none; --glass-blur: 5px; --glass-saturation: 112%;
+  --panel-mix: 100%; --inner-mix: 100%; --sheen-alpha: .035;
+}
+:root[data-theme="ios-dark"] {
+  color-scheme: dark;
+  --ios-bg: #000000;
+  --ios-surface: #1c1c1e;
+  --ios-raised: #2c2c2e;
+  --ios-toolbar: rgba(28, 28, 30, .94);
+  --ios-text: #f5f5f7;
+  --ios-secondary: #c0c0c8;
+  --ios-tertiary: #9898a0;
+  --ios-line: #38383a;
+  --ios-blue: #0091ff;
+  --ios-blue-tint: #102d48;
+  --ios-hover: #333337;
+  --ios-selected: #153754;
+  --ios-input: #2c2c2e;
+  --ios-icon: #77baff;
+  --ios-shadow: 0 6px 24px rgba(0, 0, 0, .32);
+  --bg: var(--ios-bg); --panel: var(--ios-surface); --sidebar: #111113;
+  --line: var(--ios-line); --text: var(--ios-text); --muted: var(--ios-secondary);
+  --accent: var(--ios-blue); --blue: var(--ios-blue);
+  --accent-soft: var(--ios-blue-tint); --accent-ink: #071522;
+  --theme-bg-gradient: none; --glass-blur: 5px; --glass-saturation: 112%;
+  --panel-mix: 100%; --inner-mix: 100%; --sheen-alpha: .035;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) body {
+  background: var(--ios-bg); color: var(--ios-text);
+  font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(button, input, select, textarea) {
+  font-family: inherit;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.titlebar, .tabbar, .navigation, .statusbar) {
+  background: var(--ios-toolbar); border-color: var(--ios-line);
+  color: var(--ios-text);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.sidebar, .inspector) {
+  background: color-mix(in srgb, var(--ios-surface) 91%, var(--ios-bg));
+  border-color: var(--ios-line); box-shadow: var(--ios-shadow);
+  backdrop-filter: blur(min(var(--glass-blur), 6px)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(min(var(--glass-blur), 6px)) saturate(var(--glass-saturation));
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.workspace, .content, .main) { background: transparent; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.brand, h1, h2, .file-name, .detail-name, .detail-size, .section-title, .detail-section-title) {
+  color: var(--ios-text);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.version, .titlebar-caption, .folder-header p, .eyebrow, .drive-detail, .sidebar-hint, .map-tools, .map-legend, .detail-kind, .detail-meta dt, .detail-size-label, .detail-tip, .statusbar, #status-detail) {
+  color: var(--ios-secondary);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.brand-mark, .dialog-icon, #pin-folder.pinned, .row-review.added, .detail-tip .icon) { color: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .brand-mark span { color: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .folder-header .eyebrow { color: var(--ios-secondary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .heading-line { align-items: center; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) h1 {
+  font-size: 32px; font-weight: 600; letter-spacing: -.8px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.nav-item, .drive-name, .icon-button, .detail-meta dd, .category-line, .category-line strong) {
+  color: var(--ios-secondary);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.nav-item, .drive-card, .tab, .icon-button, .button, .choose-button, .row-review, .context-menu button) {
+  border-radius: 999px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .nav-item { height: 36px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.nav-item:hover, .drive-card:hover, .icon-button:hover, .tab-close:hover) {
+  color: var(--ios-text); background: var(--ios-hover);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.nav-item.active, .icon-button.active) {
+  color: var(--ios-blue); background: var(--ios-blue-tint);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .nav-item.active .icon { color: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .nav-item.place-current { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .nav-count { color: var(--ios-tertiary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .drive-card.active,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .tab.active { background: var(--ios-blue-tint); color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) #tabs { gap: 8px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .tab { min-width: 128px; border: 1px solid transparent; border-bottom: 0; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.choose-button, .button) {
+  background: var(--ios-raised); border: 1px solid var(--ios-line); color: var(--ios-text);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .choose-button { background: var(--ios-blue-tint); color: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .button:hover { background: var(--ios-hover); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .button.primary {
+  background: var(--ios-blue); border-color: var(--ios-blue); color: #fff; font-weight: 650; box-shadow: none;
+}
+:root[data-theme="ios-dark"] .button.primary { color: #071522; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .button.subtle { background: var(--ios-blue-tint); color: var(--ios-blue); border-color: transparent; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.address-wrap, .search-wrap, .setting-row select) {
+  background: var(--ios-input); border: 1px solid var(--ios-line); border-radius: 999px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.address-wrap, .search-wrap) :is(input, .icon) { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(input::placeholder, .address-wrap input::placeholder, .search-wrap input::placeholder) { color: var(--ios-tertiary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(kbd, .tag, .count-pill) { color: var(--ios-secondary); border-color: var(--ios-line); background: var(--ios-raised); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-strip {
+  background: var(--ios-surface); border: 1px solid var(--ios-line); border-radius: 18px; box-shadow: var(--ios-shadow);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.storage-icon, .detail-symbol) { background: var(--ios-blue-tint); border-color: var(--ios-line); color: var(--ios-blue); border-radius: 16px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.storage-label, .storage-label strong, .detail-size span, .donut-center strong) { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-free { color: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.storage-track, .drive-track, .size-spark) { background: var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-track>span { background: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .treemap { background: var(--ios-surface); border: 1px solid var(--ios-line); border-radius: 18px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block {
+  color: #fff; border: 2px solid var(--ios-bg); border-radius: 12px; text-shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block .block-size,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block .block-percent { color: #fff; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block:hover { outline-color: #fff; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block.selected { outline-color: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.map-empty, .map-empty .button) { background: var(--ios-surface); border-color: var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-empty h3 { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-empty p { color: var(--ios-secondary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-legend { color: var(--ios-secondary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.files-section, .table-scroll) { border-radius: 16px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) table { border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 16px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .table-scroll thead { background: var(--ios-surface); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) th {
+  color: var(--ios-secondary); background: var(--ios-surface); border-color: var(--ios-line); font-weight: 600;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-row { background: var(--ios-surface); border-color: var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-row:nth-child(even) { background: var(--ios-surface); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-row:hover { background: var(--ios-hover); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-row.selected { background: var(--ios-selected); box-shadow: inset 3px 0 var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) td { color: var(--ios-secondary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) td:first-child { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) th, :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) td { border-bottom: 1px solid var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-name .icon { color: var(--ios-icon); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-name .folder-icon { fill: color-mix(in srgb, var(--ios-icon) 20%, transparent); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-name .file-icon { color: var(--ios-tertiary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .type-badge { color: var(--ios-secondary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .detail-divider { background: var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .detail-tip { background: var(--ios-blue-tint); border-color: var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .preview-box { background: var(--ios-raised); border-color: var(--ios-line); border-radius: 14px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .preview-box pre { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .context-menu,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .settings-dialog,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) dialog {
+  background: var(--ios-raised); color: var(--ios-text); border: 1px solid var(--ios-line);
+  border-radius: 18px; box-shadow: var(--ios-shadow);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .context-menu button { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .context-menu button:hover { color: var(--ios-blue); background: var(--ios-blue-tint); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) dialog::backdrop { background: rgba(12, 18, 28, .38); backdrop-filter: blur(3px); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) dialog p { color: var(--ios-secondary); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) dialog input { background: var(--ios-input); border-color: var(--ios-line); color: var(--ios-text); border-radius: 11px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .shortcuts { color: var(--ios-text); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.theme-options>button, .palette-card) {
+  background: var(--ios-raised); color: var(--ios-text); border-color: var(--ios-line); border-radius: 14px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .theme-options>button.chosen {
+  color: var(--ios-blue); background: var(--ios-blue-tint); border-color: var(--ios-blue);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.theme-preview, .ios-light-preview, .ios-dark-preview) { border-radius: 10px; border-color: var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.settings-section, .settings-launch, .sidebar-bottom) { border-color: var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .toast {
+  background: var(--ios-raised); color: var(--ios-text); border-color: var(--ios-line); border-radius: 999px; box-shadow: var(--ios-shadow);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .toast.error { background: #fde8e8; color: #8e2023; border-color: #f0b9ba; }
+:root[data-theme="ios-dark"] .toast.error { background: #482326; color: #ffd6d6; border-color: #754044; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) :is(.online-dot, .legend-dot) { border-radius: 50%; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .layout-separator:hover::after,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .layout-separator:focus-visible::after { background: var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .scanning #scan { background: var(--ios-blue-tint); color: var(--ios-blue); border-color: var(--ios-blue); }
+
+/* Opaque surfaces when the user selects Solid panels. */
+:root[data-theme="ios-light"][data-solid="true"],
+:root[data-theme="ios-dark"][data-solid="true"] { --glass-blur: 0px; --glass-saturation: 100%; --theme-bg-gradient: none; --ios-toolbar: var(--ios-surface); }
+:root[data-theme="ios-light"][data-solid="true"] body,
+:root[data-theme="ios-dark"][data-solid="true"] body { background: var(--ios-bg); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-solid="true"] :is(.sidebar, .inspector, .titlebar, .tabbar, .navigation, .statusbar) {
+  background: var(--ios-surface); backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-solid="true"] dialog::backdrop { backdrop-filter: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-solid="true"] :is(.sidebar, .inspector, .settings-dialog, dialog) { box-shadow: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-solid="true"] :is(.titlebar, .tabbar, .navigation, .statusbar) { background: var(--ios-toolbar); }
+

@@ -1,0 +1,426 @@
+/* iPad-style workspace composition for the iOS preview. Keep this file last. */
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) {
+  --ios-bg: #f3f4f7;
+  --ios-surface: #ffffff;
+  --ios-raised: #ffffff;
+  --ios-toolbar: transparent;
+  --ios-shadow: 0 10px 32px rgba(34, 43, 61, .075), 0 1px 3px rgba(34, 43, 61, .045);
+  --ios-line: rgba(100, 108, 123, .15);
+  --ios-blue: #0878df;
+  --ios-blue-tint: #e7f1ff;
+  --ios-hover: #f1f3f6;
+  --ios-selected: #e5f1ff;
+  --ios-input: #f2f3f6;
+}
+:root[data-theme="ios-dark"] {
+  --ios-bg: #17181b;
+  --ios-surface: #222326;
+  --ios-raised: #2b2c30;
+  --ios-toolbar: transparent;
+  --ios-shadow: 0 10px 30px rgba(0, 0, 0, .24), 0 1px 3px rgba(0, 0, 0, .18);
+  --ios-line: rgba(220, 220, 230, .12);
+  --ios-blue: #58aaff;
+  --ios-blue-tint: #23384e;
+  --ios-hover: #34353a;
+  --ios-selected: #263e56;
+  --ios-input: #303136;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) body {
+  background:
+    radial-gradient(ellipse at 34% 0%, rgba(142, 179, 224, .13), transparent 46%),
+    radial-gradient(ellipse at 100% 100%, rgba(190, 176, 219, .10), transparent 44%),
+    var(--ios-bg);
+  overflow: hidden;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .titlebar {
+  height: 43px;
+  min-height: 43px;
+  padding-right: 132px;
+  background: transparent;
+  border: 0;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .brand { gap: 7px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .brand-mark { font-size: 16px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .brand > span:last-child { font-size: 13px; font-weight: 500; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .brand .version,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .titlebar-caption { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .workspace { min-height: 0; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-details-visible="false"] .inspector,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-details-visible="false"] [data-layout-side="right"] { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .sidebar,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .inspector {
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card {
+  height: calc(100% - 24px);
+  min-height: 0;
+  margin: 12px 8px 12px 12px;
+  padding: 20px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--ios-surface) 80%, transparent);
+  box-shadow: var(--ios-shadow);
+  backdrop-filter: blur(min(var(--glass-blur), 6px)) saturate(112%);
+  -webkit-backdrop-filter: blur(min(var(--glass-blur), 6px)) saturate(112%);
+}
+:root[data-theme="ios-dark"] .ios-sidebar-card { border-color: rgba(255,255,255,.055); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 8px 16px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-heading h2 {
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -.8px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-heading span {
+  color: var(--ios-tertiary);
+  font-size: 12px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .sidebar-section { margin: 0 0 14px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .sidebar-section > .eyebrow,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .section-line .eyebrow {
+  display: block;
+  margin: 0 8px 5px;
+  color: var(--ios-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .25px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .nav-item {
+  height: 34px;
+  border-radius: 9px;
+  padding: 0 9px;
+  gap: 9px;
+  font-size: 13px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .nav-item .icon { width: 16px; height: 16px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .nav-item.active {
+  color: var(--ios-text);
+  background: var(--ios-selected);
+  font-weight: 600;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .choose-button {
+  flex-shrink: 0;
+  height: 38px;
+  margin: 10px 2px 2px;
+  border-radius: 11px;
+  font-size: 13px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-footer {
+  flex-shrink: 0;
+  margin-top: 8px;
+  padding-top: 9px;
+  border-top: 1px solid var(--ios-line);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .sidebar-bottom {
+  position: static;
+  min-height: 32px;
+  padding: 0 4px;
+  font-size: 12px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .main { padding: 0; overflow: hidden; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-main-card {
+  height: calc(100% - 24px);
+  min-height: 0;
+  margin: 12px 8px 12px 4px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--ios-line);
+  border-radius: 27px;
+  background: var(--ios-surface);
+  box-shadow: var(--ios-shadow);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .tabbar {
+  order: 0;
+  height: 38px;
+  padding: 4px 20px 0;
+  border: 0;
+  background: transparent;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-single-tab="true"] .ios-main-card .tabbar { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .tabbar #tabs { min-width: 0; overflow: auto; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .tabbar .tab {
+  height: 29px;
+  min-width: 105px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 9px;
+  font-size: 12px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .tabbar .tab.active { background: var(--ios-input); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .folder-header {
+  order: 1;
+  flex-shrink: 0;
+  margin: 3px 0 9px;
+  padding: 0 24px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .folder-header .eyebrow { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .folder-header h1 {
+  max-width: 42vw;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -.45px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .heading-line { margin: 0; gap: 5px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .folder-header p { margin-top: 2px; font-size: 13px; line-height: 1.35; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .heading-actions { gap: 7px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .heading-actions .button { height: 34px; font-size: 12px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .heading-actions #export { width: 36px; padding: 0; font-size: 0; border: 0; background: transparent; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .snapshot-badge { max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation {
+  order: -1;
+  flex-shrink: 0;
+  padding: 0 24px 11px;
+  gap: 10px;
+  border: 0;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation .history-controls { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation { position: relative; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation .address-wrap { display: flex; position: absolute; left: 24px; width: calc(62% - 42px); height: 36px; opacity: 0; pointer-events: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation .search-wrap {
+  width: min(340px, 38%);
+  height: 38px;
+  margin-left: auto;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation .search-wrap input { font-size: 14px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation .search-wrap kbd { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-location-button {
+  min-width: 0;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  overflow: hidden;
+  padding: 0 11px;
+  color: var(--ios-secondary);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-location-button:hover { color: var(--ios-text); background: var(--ios-hover); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-location-button .icon { flex: 0 0 16px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-editing-path="true"] .navigation .address-wrap { display: flex; flex: 1; min-width: 0; position: static; width: auto; opacity: 1; pointer-events: auto; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-editing-path="true"] .ios-location-button { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .content {
+  order: 3;
+  min-height: 0;
+  padding: 0 24px 8px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-strip {
+  min-height: 50px;
+  margin: 0 0 15px;
+  padding: 7px 10px;
+  gap: 10px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--ios-input);
+  box-shadow: none;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-icon { width: 32px; height: 32px; border: 0; border-radius: 9px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-label { gap: 8px; margin: 0 0 4px; font-size: 12px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-label strong { font-size: 12px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-track { height: 3px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .storage-free { font-size: 12px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-section { flex-shrink: 0; margin: 0 0 7px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .section-heading { margin: 0 0 8px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .section-title { font-size: 17px; font-weight: 650; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .tag { font-size: 9px; letter-spacing: .25px; border-radius: 5px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .treemap { height: clamp(180px, 25vh, 240px); border: 1px solid var(--ios-line); border-radius: 15px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block { border-radius: 10px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-legend { min-height: 22px; font-size: 11px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .files-section {
+  min-height: 122px;
+  margin: 0;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-toolbar { flex-shrink: 0; margin: 2px 0 9px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-toolbar h2 { font-size: 18px; font-weight: 650; letter-spacing: -.2px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .count-pill { font-size: 11px; border-radius: 7px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-tools { gap: 7px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .file-tools .button.small { height: 32px; font-size: 12px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block .block-name,
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .map-block .block-size { flex-shrink: 0; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-view-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--ios-line);
+  border-radius: 9px;
+  background: var(--ios-input);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-view-switch button {
+  width: 29px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--ios-secondary);
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-view-switch button.active { color: var(--ios-text); background: var(--ios-surface); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .table-scroll { border: 0; border-radius: 0; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .table-scroll table {
+  display: block;
+  overflow: visible;
+  border-radius: 0;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .table-scroll thead { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] #file-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(122px, 1fr));
+  align-content: start;
+  gap: 8px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row {
+  min-width: 0;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 9px 8px 7px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: none;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row:hover { background: var(--ios-hover); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row.selected { background: var(--ios-selected); box-shadow: inset 0 0 0 1px var(--ios-blue); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row:focus-visible { outline: 2px solid var(--ios-blue); outline-offset: 1px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row td {
+  min-height: 0;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  white-space: normal;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row td:first-child { flex: 1; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row td:not(:first-child) { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row td:nth-child(2) { display: block; color: var(--ios-secondary); font-size: 12px; line-height: 18px; text-align: center; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row .size-spark { display: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row .file-size { justify-content: center; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-row .file-size > span:first-child { width: auto; min-width: 0; text-align: center; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-name {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-name .icon {
+  width: 64px;
+  height: 54px;
+  flex: 0 0 54px;
+  margin: 0 auto;
+  color: var(--ios-blue);
+  stroke-width: 1.35;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-name .folder-icon {
+  fill: #6abbf2;
+  stroke: #4ea7e4;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="grid"] .file-name > span {
+  width: 100%;
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--ios-text);
+  font-size: 13px;
+  font-weight: 550;
+  text-align: center;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="list"] .table-scroll table { width: 100%; display: table; table-layout: fixed; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="list"] .table-scroll thead { display: table-header-group; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="list"] #file-list { display: table-row-group; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="list"] .file-row { height: 44px; display: table-row; border-bottom: 1px solid var(--ios-line); }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="list"] .file-row td { padding: 0 10px; border-bottom: 1px solid var(--ios-line); background: transparent; font-size: 13px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="list"] .file-name { flex-direction: row; gap: 9px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-file-layout="list"] .file-name .icon { width: 23px; height: 23px; flex-basis: 23px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .statusbar {
+  order: 4;
+  height: 29px;
+  padding: 0 24px;
+  border: 0;
+  background: transparent;
+  font-size: 11px;
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .inspector .ios-inspector-card {
+  height: calc(100% - 24px);
+  min-height: 0;
+  margin: 12px 12px 12px 8px;
+  padding: 19px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  border: 1px solid var(--ios-line);
+  border-radius: 24px;
+  background: var(--ios-surface);
+  box-shadow: var(--ios-shadow);
+}
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .inspector-heading { margin-bottom: 19px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .inspector-heading .eyebrow { color: var(--ios-text); font-size: 17px; font-weight: 650; letter-spacing: 0; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .detail-symbol { width: 58px; height: 58px; margin-bottom: 12px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .detail-meta { grid-template-columns: 70px minmax(0, 1fr); gap: 9px 6px; margin: 18px 0; font-size: 13px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .detail-meta dt { font-size: 12px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .detail-actions { gap: 6px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .detail-actions .button { min-height: 32px; font-size: 11px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card .inspector-foot { padding: 18px 0 4px; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"])[data-solid="true"] .ios-sidebar-card { background: var(--ios-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+:root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .layout-separator { z-index: 7; }
+@media (max-width: 1280px) {
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-main-card { margin-left: 2px; margin-right: 4px; }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .folder-header,
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .navigation { padding-left: 18px; padding-right: 18px; }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .content { padding-left: 18px; padding-right: 18px; }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .treemap { height: clamp(180px, 23vh, 220px); }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card { padding-right: 12px; padding-left: 12px; }
+}
+@media (max-height: 800px) {
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card,
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-inspector-card { padding-top: 14px; }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-heading { padding-bottom: 10px; }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card .sidebar-section { margin-bottom: 9px; }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .folder-header { margin-bottom: 5px; }
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .treemap { height: 180px; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  :root:is([data-theme="ios-light"], [data-theme="ios-dark"]) .ios-sidebar-card { background: var(--ios-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}

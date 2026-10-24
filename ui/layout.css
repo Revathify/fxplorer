@@ -1,0 +1,38 @@
+.workspace {
+  position: relative;
+  grid-template-columns: var(--fxplorer-sidebar-width, 212px) minmax(0, 1fr) var(--fxplorer-inspector-width, 272px);
+}
+.layout-separator {
+  position: absolute;
+  z-index: 8;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  touch-action: none;
+  background: transparent;
+}
+.layout-separator::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 2px;
+  background: transparent;
+  transition: background-color .12s;
+}
+.layout-separator:hover::after,
+.layout-separator:focus-visible::after,
+.layout-resizing .layout-separator:focus::after {
+  background: var(--accent);
+}
+.layout-separator:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.layout-resizing,
+.layout-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
